@@ -62,6 +62,17 @@ export const NAV_DATA = [
           },
         ],
       },
+      {
+        title: "Products",
+        url: "/products",
+        icon: Icons.Table,
+        items: [
+          {
+            title: "Products",
+            url: "/products",
+          },
+        ],
+      },
       // {
       //   title: "Pages",
       //   icon: Icons.Alphabet,
