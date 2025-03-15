@@ -7,14 +7,10 @@ import { OverviewCardsGroup } from "./_components/overview-cards";
 import { OverviewCardsSkeleton } from "./_components/overview-cards/skeleton";
 
 export default async function Home() {
-  // if (typeof window !== "undefined") {
-  //   if (!window.localStorage.getItem("adminAccessToken")) {
-  //     return window.location.replace("/auth/sign-in");
-  //   }
-  // }
-
-  if (!window.localStorage.getItem("adminAccessToken")) {
-    return window.location.replace("/auth/sign-in");
+  if (typeof window !== "undefined") {
+    if (!window.localStorage.getItem("adminAccessToken")) {
+      return window.location.replace("/auth/sign-in");
+    }
   }
 
   return (
