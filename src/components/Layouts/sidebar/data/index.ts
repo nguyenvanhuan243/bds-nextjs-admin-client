@@ -39,9 +39,13 @@ export const NAV_DATA = [
         ],
       },
       {
-        title: "Contacts",
+        title: "Profile",
         icon: Icons.Alphabet,
         items: [
+          {
+            title: "Profile",
+            url: "/profile",
+          },
         ],
       },
     ],
