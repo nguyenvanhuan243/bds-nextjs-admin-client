@@ -9,7 +9,7 @@ import {
 import Image from "next/image";
 import { getTopProducts } from "../fetch";
 
-export async function TopProducts() {
+export async function Users() {
   const data = await getTopProducts();
 
   return (

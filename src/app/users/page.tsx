@@ -1,10 +1,10 @@
 "use client"
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import { TopProducts } from "@/components/Tables/top-products";
-import { TopProductsSkeleton } from "@/components/Tables/top-products/skeleton";
+import { Users } from "@/components/Tables/users";
+import { UsersSkeleton } from "@/components/Tables/users/skeleton";
 import { Suspense } from "react";
 
-const TablesPage = () => {
+const UsersPage = () => {
   if (typeof window !== "undefined") {
     if (!window.localStorage.getItem("adminAccessToken")) {
       return window.location.replace("/auth/sign-in");
@@ -16,8 +16,8 @@ const TablesPage = () => {
       <Breadcrumb pageName="Users" />
       <div className="space-y-10">
 
-        <Suspense fallback={<TopProductsSkeleton />}>
-          <TopProducts />
+        <Suspense fallback={<UsersSkeleton />}>
+          <Users />
         </Suspense>
 
       </div>
@@ -25,4 +25,4 @@ const TablesPage = () => {
   );
 };
 
-export default TablesPage;
+export default UsersPage;
