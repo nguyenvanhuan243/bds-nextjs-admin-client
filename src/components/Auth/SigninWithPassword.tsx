@@ -2,25 +2,23 @@
 import { EmailIcon, PasswordIcon } from "@/assets/icons";
 import React, { useState } from "react";
 import InputGroup from "../FormElements/InputGroup";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function SigninWithPassword() {
-  const [data, setData] = useState({
-    email: process.env.NEXT_PUBLIC_DEMO_USER_MAIL || "",
-    password: process.env.NEXT_PUBLIC_DEMO_USER_PASS || "",
-  });
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setData({
-      ...data,
-      [e.target.name]: e.target.value,
+  const handleSubmit = () => {
+    toast.success("Signin Successfully", {
+      position: "top-right",
+      autoClose: 500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
     });
-  };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
     // You can remove this code block
     setLoading(true);
 
@@ -30,15 +28,15 @@ export default function SigninWithPassword() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <div>
       <InputGroup
         type="email"
         label="Email"
         className="mb-4 [&_input]:py-[15px]"
         placeholder="Enter your email"
         name="email"
-        handleChange={handleChange}
-        value={data.email}
+        handleChange={(e) => setEmail(e.target.value)}
+        value={email}
         icon={<EmailIcon />}
       />
 
@@ -48,14 +46,14 @@ export default function SigninWithPassword() {
         className="mb-5 [&_input]:py-[15px]"
         placeholder="Enter your password"
         name="password"
-        handleChange={handleChange}
-        value={data.password}
+        handleChange={(e) => setPassword(e.target.value)}
+        value={password}
         icon={<PasswordIcon />}
       />
 
       <div className="mb-4.5">
         <button
-          type="submit"
+          onClick={handleSubmit}
           className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-primary p-4 font-medium text-white transition hover:bg-opacity-90"
         >
           Sign In
@@ -64,6 +62,7 @@ export default function SigninWithPassword() {
           )}
         </button>
       </div>
-    </form>
+      <ToastContainer />
+    </div>
   );
 }
