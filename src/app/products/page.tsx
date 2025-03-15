@@ -10,6 +10,11 @@ export const metadata: Metadata = {
 };
 
 const ProductsPage = () => {
+  if (typeof window !== "undefined") {
+    if (!window.localStorage.getItem("adminAccessToken")) {
+      return window.location.replace("/auth/sign-in");
+    }
+  }
   return (
     <>
       <Breadcrumb pageName="Products" />

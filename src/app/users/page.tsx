@@ -13,6 +13,12 @@ export const metadata: Metadata = {
 };
 
 const TablesPage = () => {
+  if (typeof window !== "undefined") {
+    if (!window.localStorage.getItem("adminAccessToken")) {
+      return window.location.replace("/auth/sign-in");
+    }
+  }
+
   return (
     <>
       <Breadcrumb pageName="Tables" />
