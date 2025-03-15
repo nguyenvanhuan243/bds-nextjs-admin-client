@@ -1,3 +1,4 @@
+"use client"
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import { Products } from "@/components/Tables/products";
 import { ProductsSkeleton } from "@/components/Tables/products/skeleton";
@@ -5,9 +6,9 @@ import { ProductsSkeleton } from "@/components/Tables/products/skeleton";
 import { Metadata } from "next";
 import { Suspense } from "react";
 
-export const metadata: Metadata = {
-  title: "Tables",
-};
+// export const metadata: Metadata = {
+//   title: "Tables",
+// };
 
 const ProductsPage = () => {
   if (typeof window !== "undefined") {

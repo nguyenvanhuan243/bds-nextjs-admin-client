@@ -8,6 +8,11 @@ import { CameraIcon } from "./_components/icons";
 import { SocialAccounts } from "./_components/social-accounts";
 
 export default function Page() {
+  if (typeof window !== "undefined") {
+    if (!window.localStorage.getItem("adminAccessToken")) {
+      return window.location.replace("/auth/sign-in");
+    }
+  }
   const [data, setData] = useState({
     name: "Danish Heilium",
     profilePhoto: "/images/user/user-03.png",
