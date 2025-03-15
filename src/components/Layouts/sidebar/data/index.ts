@@ -4,7 +4,7 @@ export const NAV_DATA = [
   {
     label: "MAIN MENU",
     items: [
-      
+
       {
         title: "Users",
         url: "/users",
@@ -17,17 +17,6 @@ export const NAV_DATA = [
         ],
       },
       {
-        title: "Products",
-        url: "/products",
-        icon: Icons.Table,
-        items: [
-          {
-            title: "Products",
-            url: "/products",
-          },
-        ],
-      },
-      {
         title: "Orders",
         url: "/orders",
         icon: Icons.Table,
@@ -35,6 +24,17 @@ export const NAV_DATA = [
           {
             title: "Orders",
             url: "/orders",
+          },
+        ],
+      },
+      {
+        title: "Products",
+        url: "/products",
+        icon: Icons.Table,
+        items: [
+          {
+            title: "Products",
+            url: "/products",
           },
         ],
       },
