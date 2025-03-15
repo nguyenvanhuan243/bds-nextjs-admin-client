@@ -12,12 +12,21 @@ export default function SigninWithPassword() {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = () => {
+    if (!email || !password) {
+      toast.error("Please enter email and password", {
+        position: "top-right",
+        autoClose: 500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+      });
+      return null;
+    }
     toast.success("Signin Successfully", {
       position: "top-right",
       autoClose: 500,
       hideProgressBar: false,
       closeOnClick: true,
-      pauseOnHover: true,
     });
     // You can remove this code block
     setLoading(true);
