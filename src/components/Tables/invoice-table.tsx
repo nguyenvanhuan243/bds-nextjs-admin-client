@@ -9,11 +9,11 @@ import {
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 import dayjs from "dayjs";
-import { getInvoiceTableData } from "./fetch";
+// import { getInvoiceTableData } from "./fetch";
 import { DownloadIcon, PreviewIcon } from "./icons";
 
 export async function InvoiceTable() {
-  const data = await getInvoiceTableData();
+  // const data = await getInvoiceTableData();
 
   return (
     <div className="rounded-[10px] border border-stroke bg-white p-4 shadow-1 dark:border-dark-3 dark:bg-gray-dark dark:shadow-card sm:p-7.5">
@@ -27,7 +27,7 @@ export async function InvoiceTable() {
           </TableRow>
         </TableHeader>
 
-        <TableBody>
+        {/* <TableBody>
           {data.map((item, index) => (
             <TableRow key={index} className="border-[#eee] dark:border-dark-3">
               <TableCell className="min-w-[155px] xl:pl-7.5">
@@ -81,7 +81,7 @@ export async function InvoiceTable() {
               </TableCell>
             </TableRow>
           ))}
-        </TableBody>
+        </TableBody> */}
       </Table>
     </div>
   );
