@@ -9,8 +9,76 @@ import {
 } from "@/components/ui/table";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import "./style.css";
-export function Products() {
+
+const paginationStyles = `
+  .pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    padding: 20px 0;
+  }
+
+  .pagination-button {
+    padding: 8px 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    background-color: white;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .pagination-button:hover:not(:disabled) {
+    background-color: #f1f5f9;
+    color: #0f172a;
+  }
+
+  .pagination-button.active {
+    background-color: #3b82f6;
+    border-color: #3b82f6;
+    color: white;
+  }
+
+  .pagination-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+  }
+
+  .loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #3b82f6;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  .table-container {
+    position: relative;
+    min-height: 200px;
+  }
+`;
+
+export function Posts() {
   const [data, setData] = useState<any[]>([]);
   const [page, setPage] = useState(1);
   const [pageCount, setPageCount] = useState(0);
@@ -20,10 +88,7 @@ export function Products() {
   const fetchPosts = async (currentPage: number) => {
     setLoading(true);
     try {
-      const adminAccessToken = typeof window !== "undefined" 
-        ? window.localStorage.getItem("adminAccessToken") 
-        : "";
-
+      const adminAccessToken = window.localStorage.getItem("adminAccessToken");
       const response = await axios.get(
         `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/admin/posts`, {
           params: {
@@ -35,8 +100,9 @@ export function Products() {
           },
         }
       );
-      
+      console.log("Posts #########", response.data.posts);
       setData(response.data.posts);
+      console.log("Posts #########", response.data.posts);
       setPerPage(response.data.per_page);
       setPageCount(response.data.total_pages);
     } catch (err) {
@@ -122,6 +188,7 @@ export function Products() {
 
   return (
     <>
+      <style>{paginationStyles}</style>
       <div className="rounded-[10px] bg-white shadow-1 dark:bg-gray-dark dark:shadow-card">
         <div className="px-6 py-4 sm:px-7 sm:py-5 xl:px-8.5">
           <h2 className="text-2xl font-bold text-dark dark:text-white">
@@ -202,4 +269,4 @@ export function Products() {
       </div>
     </>
   );
-}
+} 
