@@ -21,6 +21,10 @@ export function UserInfo() {
     img: "/images/user/user-03.png",
   };
 
+  if (!window.localStorage.getItem("adminAccessToken")) {
+    return null;
+  }
+
   return (
     <Dropdown isOpen={isOpen} setIsOpen={setIsOpen}>
       <DropdownTrigger className="rounded align-middle outline-none ring-primary ring-offset-2 focus-visible:ring-1 dark:ring-offset-gray-dark">
@@ -106,7 +110,10 @@ export function UserInfo() {
         <div className="p-2 text-base text-[#4B5563] dark:text-dark-6">
           <button
             className="flex w-full items-center gap-2.5 rounded-lg px-2.5 py-[9px] hover:bg-gray-2 hover:text-dark dark:hover:bg-dark-3 dark:hover:text-white"
-            onClick={() => setIsOpen(false)}
+            onClick={() => {
+              localStorage.removeItem("adminAccessToken");
+              window.location.replace("/auth/sign-in");
+            }}
           >
             <LogOutIcon />
 
