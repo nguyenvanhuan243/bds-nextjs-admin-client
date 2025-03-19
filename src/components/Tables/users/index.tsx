@@ -23,6 +23,9 @@ export function Users() {
   const [selectedUser, setSelectedUser] = useState<any>(null);
   const [isUpdating, setIsUpdating] = useState(false);
   const [updateEmail, setUpdateEmail] = useState("");
+  const [updateFullName, setUpdateFullName] = useState("");
+  const [updatePhone, setUpdatePhone] = useState("");
+  const [updateAddress, setUpdateAddress] = useState("");
 
   const fetchUsers = async (currentPage: number) => {
     setLoading(true);
@@ -116,6 +119,9 @@ export function Users() {
     if (user) {
       setSelectedUser(user);
       setUpdateEmail(user.email);
+      setUpdateFullName(user.full_name || "");
+      setUpdatePhone(user.phone || "");
+      setUpdateAddress(user.address || "");
       setShowUpdateModal(true);
     }
   };
@@ -128,7 +134,12 @@ export function Users() {
       const adminAccessToken = window.localStorage.getItem("adminAccessToken");
       await axios.put(
         `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/admin/users/${selectedUser.id}`,
-        { email: updateEmail },
+        {
+          email: updateEmail,
+          full_name: updateFullName,
+          phone: updatePhone,
+          address: updateAddress
+        },
         {
           headers: {
             Authorization: `Bearer ${adminAccessToken}`,
@@ -180,19 +191,62 @@ export function Users() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full">
             <h3 className="text-lg font-semibold mb-4">Update User</h3>
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Email
-              </label>
-              <input
-                type="email"
-                value={updateEmail}
-                onChange={(e) => setUpdateEmail(e.target.value)}
-                className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Enter email"
-              />
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Full Name
+                </label>
+                <input
+                  type="text"
+                  value={updateFullName}
+                  onChange={(e) => setUpdateFullName(e.target.value)}
+                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Enter full name"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  value={updateEmail}
+                  onChange={(e) => setUpdateEmail(e.target.value)}
+                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Enter email"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Phone
+                </label>
+                <input
+                  type="tel"
+                  value={updatePhone}
+                  onChange={(e) => setUpdatePhone(e.target.value)}
+                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Enter phone number"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Address
+                </label>
+                <textarea
+                  value={updateAddress}
+                  onChange={(e) => setUpdateAddress(e.target.value)}
+                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Enter address"
+                  rows={3}
+                />
+              </div>
             </div>
-            <div className="flex justify-end gap-4">
+
+            <div className="flex justify-end gap-4 mt-6">
               <button
                 className="px-4 py-2 text-gray-600 hover:text-gray-800"
                 onClick={() => setShowUpdateModal(false)}
@@ -234,7 +288,7 @@ export function Users() {
             <TableHeader>
               <TableRow className="border-t text-base [&>th]:h-auto [&>th]:py-3 sm:[&>th]:py-4.5">
                 <TableHead className="min-w-[120px] pl-5 sm:pl-6 xl:pl-7.5">
-                  User Name
+                  User ID
                 </TableHead>
                 <TableHead>Email</TableHead>
                 <TableHead>Role</TableHead>
@@ -255,7 +309,7 @@ export function Users() {
                     className="text-base font-medium text-dark dark:text-white"
                   >
                     <TableCell className="flex min-w-fit items-center gap-3 pl-5 sm:pl-6 xl:pl-7.5">
-                      <div>{user.full_name || "NAN"}</div>
+                      <div>{user.id || "NAN"}</div>
                     </TableCell>
                     <TableCell>{user.email}</TableCell>
                     <TableCell>{user.user_type}</TableCell>
