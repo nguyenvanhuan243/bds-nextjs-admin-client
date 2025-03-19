@@ -21,7 +21,7 @@ export function UserInfo() {
     img: "/images/user/user-03.png",
   };
 
-  if (!localStorage.getItem("adminAccessToken")) {
+  if (!window.localStorage.getItem("adminAccessToken")) {
     return null;
   }
 
