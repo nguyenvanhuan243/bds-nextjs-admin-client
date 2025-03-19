@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import InputGroup from "../FormElements/InputGroup";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import axios from "axios";
 
 export default function SigninWithPassword() {
   const [email, setEmail] = useState("");
@@ -22,6 +23,18 @@ export default function SigninWithPassword() {
       });
       return null;
     }
+
+    axios.post(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/admin/sign-in`, {
+      email,
+      password,
+    }).then((res) => {
+      console.log("Signin Successfully #########", res);
+      const adminAccessToken = res.data.admin_access_token;
+      localStorage.setItem("adminAccessToken", adminAccessToken);
+      window.location.replace("/users");
+    }).catch((err) => {
+      console.log("Signin Failed #########", err);
+    });
     toast.success("Signin Successfully", {
       position: "top-right",
       autoClose: 500,
