@@ -71,25 +71,6 @@ export function Orders() {
       startPage = Math.max(1, endPage - maxVisiblePages + 1);
     }
 
-    if (startPage > 1) {
-      pages.push(
-        <button
-          key={1}
-          className="pagination-button"
-          onClick={() => handlePageChange(1)}
-        >
-          1
-        </button>
-      );
-      if (startPage > 2) {
-        pages.push(
-          <span key="ellipsis1" className="pagination-button" style={{ cursor: 'default' }}>
-            ...
-          </span>
-        );
-      }
-    }
-
     for (let i = startPage; i <= endPage; i++) {
       pages.push(
         <button
@@ -99,25 +80,6 @@ export function Orders() {
           onClick={() => handlePageChange(i)}
         >
           {i}
-        </button>
-      );
-    }
-
-    if (endPage < pageCount) {
-      if (endPage < pageCount - 1) {
-        pages.push(
-          <span key="ellipsis2" className="pagination-button" style={{ cursor: 'default' }}>
-            ...
-          </span>
-        );
-      }
-      pages.push(
-        <button
-          key={pageCount}
-          className="pagination-button"
-          onClick={() => handlePageChange(pageCount)}
-        >
-          {pageCount}
         </button>
       );
     }
