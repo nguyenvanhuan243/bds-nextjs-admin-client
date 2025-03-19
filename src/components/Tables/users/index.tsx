@@ -97,9 +97,11 @@ export function Users() {
               </TableHead>
               <TableHead>Email</TableHead>
               <TableHead>Role</TableHead>
-              <TableHead>Created At</TableHead>
+              <TableHead>
+                Delete Action
+              </TableHead>
               <TableHead className="pr-5 text-right sm:pr-6 xl:pr-7.5">
-                Updated At
+                Update Action
               </TableHead>
             </TableRow>
           </TableHeader>
@@ -116,9 +118,11 @@ export function Users() {
                   </TableCell>
                   <TableCell>{user.email}</TableCell>
                   <TableCell>{user.user_type}</TableCell>
-                  <TableCell>{user.created_at}</TableCell>
+                  <TableCell>
+                    <button className="text-red-500 hover:text-red-600 hover:underline pr-5">Delete</button>
+                  </TableCell>
                   <TableCell className="pr-5 text-right text-green-light-1 sm:pr-6 xl:pr-7.5">
-                    {user.updated_at}
+                    <button className="text-green-500 hover:text-green-600 hover:underline pr-5">Update</button>
                   </TableCell>
                 </TableRow>
               ))
