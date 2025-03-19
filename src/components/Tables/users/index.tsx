@@ -19,6 +19,10 @@ export function Users() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<any>(null);
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [updateEmail, setUpdateEmail] = useState("");
 
   const fetchUsers = async (currentPage: number) => {
     setLoading(true);
@@ -107,6 +111,40 @@ export function Users() {
     }
   };
 
+  const handleShowUpdateModal = (userId: number) => {
+    const user = data.find(u => u.id === userId);
+    if (user) {
+      setSelectedUser(user);
+      setUpdateEmail(user.email);
+      setShowUpdateModal(true);
+    }
+  };
+
+  const handleUpdateUser = async () => {
+    if (!selectedUser) return;
+
+    setIsUpdating(true);
+    try {
+      const adminAccessToken = window.localStorage.getItem("adminAccessToken");
+      await axios.put(
+        `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/admin/users/${selectedUser.id}`,
+        { email: updateEmail },
+        {
+          headers: {
+            Authorization: `Bearer ${adminAccessToken}`,
+          },
+        }
+      );
+      fetchUsers(page);
+      setShowUpdateModal(false);
+    } catch (err) {
+      console.log("Update User Error #########", err);
+    } finally {
+      setIsUpdating(false);
+      setSelectedUser(null);
+    }
+  };
+
   const renderDeleteModal = () => {
     return (
       showDeleteModal && (
@@ -135,6 +173,46 @@ export function Users() {
       )
     )
   }
+
+  const renderUpdateModal = () => {
+    return (
+      showUpdateModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full">
+            <h3 className="text-lg font-semibold mb-4">Update User</h3>
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Email
+              </label>
+              <input
+                type="email"
+                value={updateEmail}
+                onChange={(e) => setUpdateEmail(e.target.value)}
+                className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Enter email"
+              />
+            </div>
+            <div className="flex justify-end gap-4">
+              <button
+                className="px-4 py-2 text-gray-600 hover:text-gray-800"
+                onClick={() => setShowUpdateModal(false)}
+                disabled={isUpdating}
+              >
+                Cancel
+              </button>
+              <button
+                className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 disabled:opacity-50"
+                onClick={handleUpdateUser}
+                disabled={isUpdating}
+              >
+                {isUpdating ? "Updating..." : "Update"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )
+    );
+  };
 
   return (
     <>
@@ -191,7 +269,7 @@ export function Users() {
                     </TableCell>
                     <TableCell className="pr-5 text-right text-green-light-1 sm:pr-6 xl:pr-7.5">
                       <button
-                        onClick={() => alert("Update")}
+                        onClick={() => handleShowUpdateModal(user.id)}
                         className="text-green-500 hover:text-green-600 hover:underline pr-5"
                       >
                         Update
@@ -231,9 +309,8 @@ export function Users() {
         </div>
       </div>
 
-      {
-        renderDeleteModal()
-      }
+      {renderDeleteModal()}
+      {renderUpdateModal()}
     </>
   );
 }
