@@ -9,11 +9,12 @@ import {
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LogOutIcon, SettingsIcon, UserIcon } from "./icons";
 
 export function UserInfo() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const USER = {
     name: "John Smith",
@@ -21,7 +22,14 @@ export function UserInfo() {
     img: "/images/user/user-03.png",
   };
 
-  if (!window.localStorage.getItem("adminAccessToken")) {
+  useEffect(() => {
+    // Check authentication after component mounts
+    const token = localStorage.getItem("adminAccessToken");
+    setIsAuthenticated(!!token);
+  }, []);
+
+  // Don't render anything until we've checked authentication
+  if (!isAuthenticated) {
     return null;
   }
 
