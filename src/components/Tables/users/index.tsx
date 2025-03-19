@@ -16,6 +16,9 @@ export function Users() {
   const [page, setPage] = useState(1);
   const [pageCount, setPageCount] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const fetchUsers = async (currentPage: number) => {
     setLoading(true);
@@ -74,88 +77,155 @@ export function Users() {
     return pages;
   };
 
+  const handleShowDeleteModal = (userId: number) => {
+    setSelectedUserId(userId);
+    setShowDeleteModal(true);
+  };
+
+  const handleDeleteUser = async () => {
+    if (!selectedUserId) return;
+
+    setIsDeleting(true);
+    try {
+      const adminAccessToken = window.localStorage.getItem("adminAccessToken");
+      await axios.delete(
+        `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/admin/users/${selectedUserId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${adminAccessToken}`,
+          },
+        }
+      );
+      fetchUsers(page);
+      setShowDeleteModal(false);
+      setSelectedUserId(null);
+    } catch (err) {
+      console.log("Delete User Error #########", err);
+    } finally {
+      setIsDeleting(false);
+      setSelectedUserId(null);
+    }
+  };
+
   return (
-    <div className="rounded-[10px] bg-white shadow-1 dark:bg-gray-dark dark:shadow-card">
-      <div className="px-6 py-4 sm:px-7 sm:py-5 xl:px-8.5">
-        <h2 className="text-2xl font-bold text-dark dark:text-white">
-          Users management
-        </h2>
-      </div>
+    <>
+      <div className="rounded-[10px] bg-white shadow-1 dark:bg-gray-dark dark:shadow-card">
+        <div className="px-6 py-4 sm:px-7 sm:py-5 xl:px-8.5">
+          <h2 className="text-2xl font-bold text-dark dark:text-white">
+            Users management
+          </h2>
+        </div>
 
-      <div className="table-container">
-        {loading && (
-          <div className="loading-overlay">
-            <div className="loading-spinner" />
-          </div>
-        )}
+        <div className="table-container">
+          {loading && (
+            <div className="loading-overlay">
+              <div className="loading-spinner" />
+            </div>
+          )}
 
-        <Table>
-          <TableHeader>
-            <TableRow className="border-t text-base [&>th]:h-auto [&>th]:py-3 sm:[&>th]:py-4.5">
-              <TableHead className="min-w-[120px] pl-5 sm:pl-6 xl:pl-7.5">
-                User Name
-              </TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead>Role</TableHead>
-              <TableHead>
-                Delete Action
-              </TableHead>
-              <TableHead className="pr-5 text-right sm:pr-6 xl:pr-7.5">
-                Update Action
-              </TableHead>
-            </TableRow>
-          </TableHeader>
+          <Table>
+            <TableHeader>
+              <TableRow className="border-t text-base [&>th]:h-auto [&>th]:py-3 sm:[&>th]:py-4.5">
+                <TableHead className="min-w-[120px] pl-5 sm:pl-6 xl:pl-7.5">
+                  User Name
+                </TableHead>
+                <TableHead>Email</TableHead>
+                <TableHead>Role</TableHead>
+                <TableHead>
+                  Delete Action
+                </TableHead>
+                <TableHead className="pr-5 text-right sm:pr-6 xl:pr-7.5">
+                  Update Action
+                </TableHead>
+              </TableRow>
+            </TableHeader>
 
-          <TableBody>
-            {data && data.length > 0 ? (
-              data.map((user, index) => (
-                <TableRow
-                  key={user.id || index}
-                  className="text-base font-medium text-dark dark:text-white"
-                >
-                  <TableCell className="flex min-w-fit items-center gap-3 pl-5 sm:pl-6 xl:pl-7.5">
-                    <div>{user.full_name || "NAN"}</div>
-                  </TableCell>
-                  <TableCell>{user.email}</TableCell>
-                  <TableCell>{user.user_type}</TableCell>
-                  <TableCell>
-                    <button className="text-red-500 hover:text-red-600 hover:underline pr-5">Delete</button>
-                  </TableCell>
-                  <TableCell className="pr-5 text-right text-green-light-1 sm:pr-6 xl:pr-7.5">
-                    <button className="text-green-500 hover:text-green-600 hover:underline pr-5">Update</button>
+            <TableBody>
+              {data && data.length > 0 ? (
+                data.map((user, index) => (
+                  <TableRow
+                    key={user.id || index}
+                    className="text-base font-medium text-dark dark:text-white"
+                  >
+                    <TableCell className="flex min-w-fit items-center gap-3 pl-5 sm:pl-6 xl:pl-7.5">
+                      <div>{user.full_name || "NAN"}</div>
+                    </TableCell>
+                    <TableCell>{user.email}</TableCell>
+                    <TableCell>{user.user_type}</TableCell>
+                    <TableCell>
+                      <button
+                        onClick={() => handleShowDeleteModal(user.id)}
+                        className="text-red-500 hover:text-red-600 hover:underline pr-5"
+                      >
+                        Delete
+                      </button>
+                    </TableCell>
+                    <TableCell className="pr-5 text-right text-green-light-1 sm:pr-6 xl:pr-7.5">
+                      <button
+                        onClick={() => alert("Update")}
+                        className="text-green-500 hover:text-green-600 hover:underline pr-5"
+                      >
+                        Update
+                      </button>
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={5} className="text-center py-4">
+                    {loading ? "" : "No users found"}
                   </TableCell>
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={5} className="text-center py-4">
-                  {loading ? "" : "No users found"}
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+              )}
+            </TableBody>
+          </Table>
+        </div>
+
+        <div className="pagination-container">
+          <button
+            className="pagination-button"
+            onClick={() => setPage(page - 1)}
+            disabled={page <= 1 || loading}
+          >
+            Previous
+          </button>
+
+          {renderPageNumbers()}
+
+          <button
+            className="pagination-button"
+            onClick={() => setPage(page + 1)}
+            disabled={page >= pageCount || loading}
+          >
+            Next
+          </button>
+        </div>
       </div>
 
-      <div className="pagination-container">
-        <button
-          className="pagination-button"
-          onClick={() => setPage(page - 1)}
-          disabled={page <= 1 || loading}
-        >
-          Previous
-        </button>
-
-        {renderPageNumbers()}
-
-        <button
-          className="pagination-button"
-          onClick={() => setPage(page + 1)}
-          disabled={page >= pageCount || loading}
-        >
-          Next
-        </button>
-      </div>
-    </div>
+      {showDeleteModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full">
+            <h3 className="text-lg font-semibold mb-4">Confirm Deletion</h3>
+            <p className="mb-6">Are you sure you want to delete this user? This action cannot be undone.</p>
+            <div className="flex justify-end gap-4">
+              <button
+                className="px-4 py-2 text-gray-600 hover:text-gray-800"
+                onClick={() => setShowDeleteModal(false)}
+                disabled={isDeleting}
+              >
+                Cancel
+              </button>
+              <button
+                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 disabled:opacity-50"
+                onClick={handleDeleteUser}
+                disabled={isDeleting}
+              >
+                {isDeleting ? "Deleting..." : "Delete"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
