@@ -38,16 +38,16 @@ export const NAV_DATA = [
           },
         ],
       },
-      {
-        title: "Profile",
-        icon: Icons.Alphabet,
-        items: [
-          {
-            title: "Profile",
-            url: "/profile",
-          },
-        ],
-      },
+      // {
+      //   title: "Profile",
+      //   icon: Icons.Alphabet,
+      //   items: [
+      //     {
+      //       title: "Profile",
+      //       url: "/profile",
+      //     },
+      //   ],
+      // },
     ],
   }
 ];
