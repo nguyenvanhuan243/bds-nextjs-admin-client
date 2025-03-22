@@ -160,27 +160,27 @@ export function Users() {
     if (showDeleteModal) {
       return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full">
-          <h3 className="text-lg font-semibold mb-4">Confirm Deletion</h3>
-          <p className="mb-6">Are you sure you want to delete this user? This action cannot be undone.</p>
-          <div className="flex justify-end gap-4">
-            <button
-              className="px-4 py-2 text-gray-600 hover:text-gray-800"
-              onClick={() => setShowDeleteModal(false)}
-              disabled={isDeleting}
-            >
-              Cancel
-            </button>
-            <button
-              className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 disabled:opacity-50"
-              onClick={handleDeleteUser}
-              disabled={isDeleting}
-            >
-              {isDeleting ? "Deleting..." : "Delete"}
-            </button>
+          <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full">
+            <h3 className="text-lg font-semibold mb-4">Confirm Deletion</h3>
+            <p className="mb-6">Are you sure you want to delete this user? This action cannot be undone.</p>
+            <div className="flex justify-end gap-4">
+              <button
+                className="px-4 py-2 text-gray-600 hover:text-gray-800"
+                onClick={() => setShowDeleteModal(false)}
+                disabled={isDeleting}
+              >
+                Cancel
+              </button>
+              <button
+                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 disabled:opacity-50"
+                onClick={handleDeleteUser}
+                disabled={isDeleting}
+              >
+                {isDeleting ? "Deleting..." : "Delete"}
+              </button>
+            </div>
           </div>
         </div>
-      </div>
       )
     }
   }
@@ -189,83 +189,123 @@ export function Users() {
     if (showUpdateModal) {
       return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full">
-          <h3 className="text-lg font-semibold mb-4">Update User</h3>
+          <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full">
+            <h3 className="text-lg font-semibold mb-4">Update User</h3>
 
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Full Name
-              </label>
-              <input
-                type="text"
-                value={updateFullName}
-                onChange={(e) => setUpdateFullName(e.target.value)}
-                className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Enter full name"
-              />
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Full Name
+                </label>
+                <input
+                  type="text"
+                  value={updateFullName}
+                  onChange={(e) => setUpdateFullName(e.target.value)}
+                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Enter full name"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  value={updateEmail}
+                  onChange={(e) => setUpdateEmail(e.target.value)}
+                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Enter email"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Phone
+                </label>
+                <input
+                  type="tel"
+                  value={updatePhone}
+                  onChange={(e) => setUpdatePhone(e.target.value)}
+                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Enter phone number"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Address
+                </label>
+                <textarea
+                  value={updateAddress}
+                  onChange={(e) => setUpdateAddress(e.target.value)}
+                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Enter address"
+                  rows={3}
+                />
+              </div>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Email
-              </label>
-              <input
-                type="email"
-                value={updateEmail}
-                onChange={(e) => setUpdateEmail(e.target.value)}
-                className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Enter email"
-              />
+            <div className="flex justify-end gap-4 mt-6">
+              <button
+                className="px-4 py-2 text-gray-600 hover:text-gray-800"
+                onClick={() => setShowUpdateModal(false)}
+                disabled={isUpdating}
+              >
+                Cancel
+              </button>
+              <button
+                className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 disabled:opacity-50"
+                onClick={handleUpdateUser}
+                disabled={isUpdating}
+              >
+                {isUpdating ? "Updating..." : "Update"}
+              </button>
             </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Phone
-              </label>
-              <input
-                type="tel"
-                value={updatePhone}
-                onChange={(e) => setUpdatePhone(e.target.value)}
-                className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Enter phone number"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Address
-              </label>
-              <textarea
-                value={updateAddress}
-                onChange={(e) => setUpdateAddress(e.target.value)}
-                className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Enter address"
-                rows={3}
-              />
-            </div>
-          </div>
-
-          <div className="flex justify-end gap-4 mt-6">
-            <button
-              className="px-4 py-2 text-gray-600 hover:text-gray-800"
-              onClick={() => setShowUpdateModal(false)}
-              disabled={isUpdating}
-            >
-              Cancel
-            </button>
-            <button
-              className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 disabled:opacity-50"
-              onClick={handleUpdateUser}
-              disabled={isUpdating}
-            >
-              {isUpdating ? "Updating..." : "Update"}
-            </button>
           </div>
         </div>
-      </div>
       )
     }
+  }
+
+  const renderPreviousButton = () => {
+    return (
+      <button
+        className="pagination-button"
+        onClick={() => setPage(page - 1)}
+        disabled={page <= 1 || loading}
+      >
+        Previous
+      </button>
+    )
+  }
+
+  const renderNextButton = () => {
+    return (
+      <button
+        className="pagination-button"
+        onClick={() => setPage(page + 1)}
+        disabled={page >= pageCount || loading}
+      >
+        Next
+      </button>
+    )
+  }
+
+  const renderPagination = () => {
+    return (
+      <div className="pagination-container">
+        {
+          renderPreviousButton()
+        }
+
+        {renderPageNumbers()}
+
+        {
+          renderNextButton()
+        }
+      </div>
+    )
   }
 
   return (
@@ -342,29 +382,17 @@ export function Users() {
           </Table>
         </div>
 
-        <div className="pagination-container">
-          <button
-            className="pagination-button"
-            onClick={() => setPage(page - 1)}
-            disabled={page <= 1 || loading}
-          >
-            Previous
-          </button>
-
-          {renderPageNumbers()}
-
-          <button
-            className="pagination-button"
-            onClick={() => setPage(page + 1)}
-            disabled={page >= pageCount || loading}
-          >
-            Next
-          </button>
-        </div>
+        {
+          renderPagination()
+        }
       </div>
 
-      {renderDeleteModal()}
-      {renderUpdateModal()}
+      {
+        renderDeleteModal()
+      }
+      {
+        renderUpdateModal()
+      }
     </>
   );
 }
