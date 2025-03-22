@@ -27,6 +27,7 @@ export function Users() {
   const [updatePhone, setUpdatePhone] = useState("");
   const [updateAddress, setUpdateAddress] = useState("");
   const [showNotFoundModal, setShowNotFoundModal] = useState(false);
+  const [showUpdateErrorModal, setShowUpdateErrorModal] = useState(false);
 
   const fetchUsers = async (currentPage: number) => {
     setLoading(true);
@@ -131,6 +132,11 @@ export function Users() {
 
   const handleUpdateUser = async () => {
     if (!selectedUser) return;
+    if (updateEmail === "" || updateFullName === "" || updatePhone === "" || updateAddress === "") {
+      setShowUpdateErrorModal(true);
+      setShowUpdateModal(false);
+      return;
+    }
 
     setIsUpdating(true);
     try {
@@ -151,8 +157,9 @@ export function Users() {
       );
       fetchUsers(page);
       setShowUpdateModal(false);
-    } catch (err) {
-      console.log("Update User Error #########", err);
+    } catch (err: any) {
+      setShowUpdateErrorModal(true);
+      setShowUpdateModal(false);
     } finally {
       setIsUpdating(false);
       setSelectedUser(null);
@@ -316,6 +323,30 @@ export function Users() {
     )
   }
 
+  const renderUpdateErrorModal = () => {
+    if (showUpdateErrorModal) {
+      return (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full">
+            <h3 className="text-lg font-semibold mb-4">Update User Error</h3>
+            <p className="mb-6">
+              Your data is not valid, please try again
+            </p>
+            <div className="flex justify-end gap-4">
+              <button
+                className="px-4 py-2 text-gray-600 hover:text-gray-800"
+                onClick={() => setShowUpdateErrorModal(false)}
+              >
+                Yes, I will try again
+              </button>
+            </div>
+          </div>
+        </div>
+      )
+    }
+  }
+
+
   const renderPagination = () => {
     return (
       <div className="pagination-container">
@@ -421,6 +452,9 @@ export function Users() {
       }
       {
         renderNotFoundModal()
+      }
+      {
+        renderUpdateErrorModal()
       }
     </>
   );
