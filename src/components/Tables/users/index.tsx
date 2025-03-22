@@ -299,7 +299,9 @@ export function Users() {
           renderPreviousButton()
         }
 
-        {renderPageNumbers()}
+        {
+          renderPageNumbers()
+        }
 
         {
           renderNextButton()
