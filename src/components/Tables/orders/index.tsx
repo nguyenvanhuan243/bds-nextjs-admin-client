@@ -29,22 +29,22 @@ export function Orders() {
   const fetchOrders = async (currentPage: number) => {
     setLoading(true);
     try {
-      const adminAccessToken = typeof window !== "undefined" 
-        ? window.localStorage.getItem("adminAccessToken") 
+      const adminAccessToken = typeof window !== "undefined"
+        ? window.localStorage.getItem("adminAccessToken")
         : "";
 
       const response = await axios.get(
         `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/admin/orders`, {
-          params: {
-            page: currentPage,
-            per_page: perPage
-          },
-          headers: {
-            Authorization: `Bearer ${adminAccessToken}`,
-          },
-        }
+        params: {
+          page: currentPage,
+          per_page: perPage
+        },
+        headers: {
+          Authorization: `Bearer ${adminAccessToken}`,
+        },
+      }
       );
-      
+
       setData(response.data.orders);
       setPerPage(response.data.per_page);
       setPageCount(response.data.total_pages);
@@ -102,34 +102,34 @@ export function Orders() {
         Authorization: adminAccessToken
       },
     })
-    .then(() => {
-      console.log("Order deleted successfully");
-      toast.success("Order deleted successfully", {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
+      .then(() => {
+        console.log("Order deleted successfully");
+        toast.success("Order deleted successfully", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+        });
+        window.location.reload();
+      })
+      .catch((err) => {
+        console.log("Error deleting order #########", err);
+        toast.error("Error deleting order", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+        });
+        window.location.reload();
       });
-      window.location.reload();  
-    })
-    .catch((err) => {
-      console.log("Error deleting order #########", err);
-      toast.error("Error deleting order", {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-      });
-      window.location.reload();
-    });
   };
 
   const handleCancelOrder = async (orderId: number) => {
     try {
-      const adminAccessToken = typeof window !== "undefined" 
-        ? window.localStorage.getItem("adminAccessToken") 
+      const adminAccessToken = typeof window !== "undefined"
+        ? window.localStorage.getItem("adminAccessToken")
         : "";
 
       await axios.put(
@@ -141,7 +141,7 @@ export function Orders() {
           },
         }
       );
-      
+
       // Refresh the orders list
       fetchOrders(page);
     } catch (err) {
@@ -151,8 +151,8 @@ export function Orders() {
 
   const handleCompleteOrder = async (orderId: number) => {
     try {
-      const adminAccessToken = typeof window !== "undefined" 
-        ? window.localStorage.getItem("adminAccessToken") 
+      const adminAccessToken = typeof window !== "undefined"
+        ? window.localStorage.getItem("adminAccessToken")
         : "";
 
       await axios.put(
@@ -164,7 +164,7 @@ export function Orders() {
           },
         }
       );
-      
+
       // Refresh the orders list
       fetchOrders(page);
     } catch (err) {
@@ -276,7 +276,7 @@ export function Orders() {
             )
           }
           {renderPageNumbers()}
-          
+
           {
             pageCount > 1 && (
               <button
@@ -284,7 +284,7 @@ export function Orders() {
                 onClick={() => handlePageChange(page + 1)}
                 disabled={page >= pageCount || loading}
               >
-                Next  
+                Next
               </button>
             )
           }
