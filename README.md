@@ -97,4 +97,6 @@ git push origin feature/sign-in
 
 
 # Delete branch
+```
 git branch -D feature/sign-in
+```
