@@ -9,17 +9,6 @@ export const NAV_DATA = [
         icon: Icons.HomeIcon,
         items: [
           {
-            title: "Dashboard",
-            url: "/",
-          },
-        ],
-      },
-      {
-        title: "Users",
-        url: "/users",
-        icon: Icons.Table,
-        items: [
-          {
             title: "Users",
             url: "/users",
           },
