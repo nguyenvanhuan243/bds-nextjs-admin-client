@@ -231,12 +231,12 @@ export function Orders() {
                         <button
                           onClick={() => handleCancelOrder(order.id)}
                           className="px-4 py-2 text-sm font-medium text-white bg-red-500 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
-                          disabled={order.order_status === 'cancelled'}
+                          disabled={order.order_status === ORDER_STATUS.CANCELLED}
                         >
                           Cancel
                         </button>
                         <button
-                          disabled={order.order_status === 'completed'}
+                          disabled={order.order_status === ORDER_STATUS.COMPLETED}
                           onClick={() => handleCompleteOrder(order.id)}
                           className="px-4 py-2 text-sm font-medium text-white bg-green-500 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
                         >
