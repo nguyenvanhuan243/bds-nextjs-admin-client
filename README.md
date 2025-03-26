@@ -83,11 +83,13 @@ All these features and more make **NextAdmin** a robust, well-rounded solution f
 
 
 # Github
+```
 git status
 git checkout -b "feature/sign-in"
 git add file/path
 git commit -m "feat: sign in"
 git push origin feature/sign-in
+```
 
 
 # Create a new pull request
