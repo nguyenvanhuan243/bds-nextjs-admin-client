@@ -10,9 +10,12 @@ import {
 import axios from "axios";
 import { useEffect, useState } from "react";
 import "./style.css";
+import { Order } from "@/types/order";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export function Orders() {
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<Order[]>([]);
   const [page, setPage] = useState(1);
   const [pageCount, setPageCount] = useState(0);
   const [perPage, setPerPage] = useState(10);
@@ -87,6 +90,62 @@ export function Orders() {
     return pages;
   };
 
+  const handleDelete = (id: number) => {
+    // alert("Delete order #########", id);
+    console.log("Delete order #########", id);
+    const adminAccessToken = typeof window !== "undefined" ? window.localStorage.getItem("adminAccessToken") : "";
+    axios.delete(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/admin/orders/${id}`, {
+      headers: {
+        Authorization: adminAccessToken
+      },
+    })
+    .then(() => {
+      console.log("Order deleted successfully");
+      toast.success("Order deleted successfully", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+      });
+      window.location.reload();  
+    })
+    .catch((err) => {
+      console.log("Error deleting order #########", err);
+      toast.error("Error deleting order", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+      });
+      window.location.reload();
+    });
+  };
+
+  const handleCancelOrder = async (orderId: number) => {
+    try {
+      const adminAccessToken = typeof window !== "undefined" 
+        ? window.localStorage.getItem("adminAccessToken") 
+        : "";
+
+      await axios.put(
+        `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/admin/orders/${orderId}`,
+        { order_status: 'cancelled' },
+        {
+          headers: {
+            Authorization: `Bearer ${adminAccessToken}`,
+          },
+        }
+      );
+      
+      // Refresh the orders list
+      fetchOrders(page);
+    } catch (err) {
+      console.log("Cancel Order Error:", err);
+    }
+  };
+
   return (
     <>
       <div className="rounded-[10px] bg-white shadow-1 dark:bg-gray-dark dark:shadow-card">
@@ -109,36 +168,65 @@ export function Orders() {
                 <TableHead className="min-w-[120px] pl-5 sm:pl-6 xl:pl-7.5">
                   Order ID
                 </TableHead>
-                <TableHead>Customer</TableHead>
-                <TableHead>Amount</TableHead>
+                <TableHead>Order Title</TableHead>
+                <TableHead>Email</TableHead>
+                <TableHead>Phone</TableHead>
                 <TableHead>Status</TableHead>
+                <TableHead>Address</TableHead>
                 <TableHead className="pr-5 text-right sm:pr-6 xl:pr-7.5">
                   Created At
+                </TableHead>
+                <TableHead className="pr-5 text-right sm:pr-6 xl:pr-7.5">
+                  Actions
                 </TableHead>
               </TableRow>
             </TableHeader>
 
             <TableBody>
               {data && data.length > 0 ? (
-                data.map((order, index) => (
+                data.map((order) => (
                   <TableRow
-                    key={order.id || index}
+                    key={order.id}
                     className="text-base font-medium text-dark dark:text-white"
                   >
-                    <TableCell className="flex min-w-fit items-center gap-3 pl-5 sm:pl-6 xl:pl-7.5">
-                      <div>{order.id || "NAN"}</div>
+                    <TableCell>
+                      <div>{order.id}</div>
                     </TableCell>
-                    <TableCell>{order.customer_name}</TableCell>
-                    <TableCell>${order.amount}</TableCell>
-                    <TableCell>{order.status}</TableCell>
+                    <TableCell>{order.order_link}</TableCell>
+                    <TableCell>{order.email}</TableCell>
+                    <TableCell>{order.phone_number}</TableCell>
+                    <TableCell>{order.order_status}</TableCell>
+                    <TableCell>{order.address || 'N/A'}</TableCell>
                     <TableCell className="pr-5 text-right text-green-light-1 sm:pr-6 xl:pr-7.5">
-                      {order.created_at}
+                      {new Date(order.created_at).toLocaleDateString()}
+                    </TableCell>
+                    <TableCell className="pr-5 text-right sm:pr-6 xl:pr-7.5">
+                      <div className="flex flex-col gap-2">
+                        <button
+                          onClick={() => handleCancelOrder(order.id)}
+                          className="px-4 py-2 text-sm font-medium text-white bg-red-500 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                          disabled={order.order_status === 'cancelled'}
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          className="px-4 py-2 text-sm font-medium text-white bg-green-500 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                        >
+                          Complete
+                        </button>
+                        <button
+                          onClick={() => handleDelete(order.id)}
+                          className="px-4 py-2 text-sm font-medium text-white bg-gray-500 rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+                        >
+                          Delete
+                        </button>
+                      </div>
                     </TableCell>
                   </TableRow>
                 ))
               ) : (
                 <TableRow>
-                  <TableCell colSpan={5} className="text-center py-4">
+                  <TableCell colSpan={7} className="text-center py-4">
                     {loading ? "" : "No orders found"}
                   </TableCell>
                 </TableRow>
@@ -173,6 +261,7 @@ export function Orders() {
             )
           }
         </div>
+        <ToastContainer />
       </div>
     </>
   );
