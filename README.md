@@ -100,3 +100,6 @@ git push origin feature/sign-in
 ```
 git branch -D feature/sign-in
 ```
+
+# AdminNextJS
+https://github.com/NextAdminHQ/nextjs-admin-dashboard/blob/main/src/components/Layouts/sidebar/data/index.ts
