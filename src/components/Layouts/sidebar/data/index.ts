@@ -35,17 +35,7 @@ export const NAV_DATA = [
             url: "/products",
           },
         ],
-      },
-      // {
-      //   title: "Profile",
-      //   icon: Icons.Alphabet,
-      //   items: [
-      //     {
-      //       title: "Profile",
-      //       url: "/profile",
-      //     },
-      //   ],
-      // },
+      }
     ],
   }
 ];
