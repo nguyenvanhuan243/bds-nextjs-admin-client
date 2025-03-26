@@ -14,6 +14,11 @@ import { Order } from "@/types/order";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+const ORDER_STATUS = {
+  COMPLETED: "completed",
+  CANCELLED: "cancelled"
+}
+
 export function Orders() {
   const [data, setData] = useState<Order[]>([]);
   const [page, setPage] = useState(1);
@@ -91,8 +96,6 @@ export function Orders() {
   };
 
   const handleDelete = (id: number) => {
-    // alert("Delete order #########", id);
-    console.log("Delete order #########", id);
     const adminAccessToken = typeof window !== "undefined" ? window.localStorage.getItem("adminAccessToken") : "";
     axios.delete(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/admin/orders/${id}`, {
       headers: {
@@ -131,7 +134,7 @@ export function Orders() {
 
       await axios.put(
         `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/admin/orders/${orderId}`,
-        { order_status: 'cancelled' },
+        { order_status: ORDER_STATUS.CANCELLED },
         {
           headers: {
             Authorization: `Bearer ${adminAccessToken}`,
@@ -154,7 +157,7 @@ export function Orders() {
 
       await axios.put(
         `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/admin/orders/${orderId}`,
-        { order_status: 'completed' },
+        { order_status: ORDER_STATUS.COMPLETED },
         {
           headers: {
             Authorization: `Bearer ${adminAccessToken}`,
