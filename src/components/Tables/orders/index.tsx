@@ -146,6 +146,29 @@ export function Orders() {
     }
   };
 
+  const handleCompleteOrder = async (orderId: number) => {
+    try {
+      const adminAccessToken = typeof window !== "undefined" 
+        ? window.localStorage.getItem("adminAccessToken") 
+        : "";
+
+      await axios.put(
+        `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/admin/orders/${orderId}`,
+        { order_status: 'completed' },
+        {
+          headers: {
+            Authorization: `Bearer ${adminAccessToken}`,
+          },
+        }
+      );
+      
+      // Refresh the orders list
+      fetchOrders(page);
+    } catch (err) {
+      console.log("Cancel Order Error:", err);
+    }
+  };
+
   return (
     <>
       <div className="rounded-[10px] bg-white shadow-1 dark:bg-gray-dark dark:shadow-card">
@@ -210,6 +233,8 @@ export function Orders() {
                           Cancel
                         </button>
                         <button
+                          disabled={order.order_status === 'completed'}
+                          onClick={() => handleCompleteOrder(order.id)}
                           className="px-4 py-2 text-sm font-medium text-white bg-green-500 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
                         >
                           Complete
