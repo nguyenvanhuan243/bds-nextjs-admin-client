@@ -17,7 +17,7 @@ export function Products() {
   const [perPage, setPerPage] = useState(10);
   const [loading, setLoading] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false); 
+  const [isDeleting, setIsDeleting] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
 
 
