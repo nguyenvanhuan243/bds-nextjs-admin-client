@@ -172,6 +172,56 @@ export function Orders() {
     }
   };
 
+  const renderButtons = (order: Order) => {
+    if (order.order_status === ORDER_STATUS.CANCELLED) {
+      return (
+        <button
+          onClick={() => handleCancelOrder(order.id)}
+          className="px-4 py-2 text-sm font-medium text-white bg-red-500 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+          disabled
+        >
+          Đã Hủy
+        </button>
+      )
+    }
+    if (order.order_status === ORDER_STATUS.COMPLETED) {
+      return (
+        <button
+          disabled
+          onClick={() => handleCompleteOrder(order.id)}
+          className="px-4 py-2 text-sm font-medium text-white bg-green-500 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+        >
+          Đã Hoàn Thành
+        </button>
+      )
+    }
+    return (
+      <div className="flex flex-col gap-2">
+        <button
+          onClick={() => handleCancelOrder(order.id)}
+          className="px-4 py-2 text-sm font-medium text-white bg-red-500 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+          disabled={order.order_status === ORDER_STATUS.CANCELLED}
+        >
+          Hủy Đơn Hàng
+        </button>
+        <button
+          disabled={order.order_status === ORDER_STATUS.COMPLETED}
+          onClick={() => handleCompleteOrder(order.id)}
+          className="px-4 py-2 text-sm font-medium text-white bg-green-500 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+        >
+          Hoàn tất
+        </button>
+        <button
+          onClick={() => handleDelete(order.id)}
+          className="px-4 py-2 text-sm font-medium text-white bg-gray-500 rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+        >
+          Xóa đơn hàng
+        </button>
+      </div>
+    )
+  }
+
+
   return (
     <>
       <div className="rounded-[10px] bg-white shadow-1 dark:bg-gray-dark dark:shadow-card">
@@ -227,28 +277,9 @@ export function Orders() {
                       {new Date(order.created_at).toLocaleDateString()}
                     </TableCell>
                     <TableCell className="pr-5 text-right sm:pr-6 xl:pr-7.5">
-                      <div className="flex flex-col gap-2">
-                        <button
-                          onClick={() => handleCancelOrder(order.id)}
-                          className="px-4 py-2 text-sm font-medium text-white bg-red-500 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
-                          disabled={order.order_status === ORDER_STATUS.CANCELLED}
-                        >
-                          Cancel
-                        </button>
-                        <button
-                          disabled={order.order_status === ORDER_STATUS.COMPLETED}
-                          onClick={() => handleCompleteOrder(order.id)}
-                          className="px-4 py-2 text-sm font-medium text-white bg-green-500 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
-                        >
-                          Complete
-                        </button>
-                        <button
-                          onClick={() => handleDelete(order.id)}
-                          className="px-4 py-2 text-sm font-medium text-white bg-gray-500 rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
-                        >
-                          Delete
-                        </button>
-                      </div>
+                      {
+                        renderButtons(order)
+                      }
                     </TableCell>
                   </TableRow>
                 ))

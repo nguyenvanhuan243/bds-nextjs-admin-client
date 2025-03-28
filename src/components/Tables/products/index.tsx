@@ -246,6 +246,7 @@ export function Products() {
           </button>
         </div>
         {renderDeleteModal()}
+        {/* {renderUpdateModal()} */}
       </div>
     </>
   );
