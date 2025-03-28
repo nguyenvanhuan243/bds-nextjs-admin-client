@@ -101,11 +101,13 @@ export function Products() {
           <Table>
             <TableHeader>
               <TableRow className="border-t text-base [&>th]:h-auto [&>th]:py-3 sm:[&>th]:py-4.5">
+                <TableHead>POST ID</TableHead>
                 <TableHead className="min-w-[120px] pl-5 sm:pl-6 xl:pl-7.5">
                   Title
                 </TableHead>
-                <TableHead>Description</TableHead>
-                <TableHead>Status</TableHead>
+               
+                <TableHead>Old Price</TableHead>
+                <TableHead>New Price</TableHead>
                 <TableHead>Created At</TableHead>
                 <TableHead className="pr-5 text-right sm:pr-6 xl:pr-7.5">
                   Updated At
@@ -120,11 +122,12 @@ export function Products() {
                     key={post.id || index}
                     className="text-base font-medium text-dark dark:text-white"
                   >
+                      <TableCell>{post.id}</TableCell>
                     <TableCell className="flex min-w-fit items-center gap-3 pl-5 sm:pl-6 xl:pl-7.5">
                       <div>{post.title || "NAN"}</div>
                     </TableCell>
-                    <TableCell>{post.description}</TableCell>
-                    <TableCell>{post.status}</TableCell>
+                    <TableCell>{post.old_price}</TableCell>
+                    <TableCell>{post.new_price}</TableCell>
                     <TableCell>{post.created_at}</TableCell>
                     <TableCell className="pr-5 text-right text-green-light-1 sm:pr-6 xl:pr-7.5">
                       {post.updated_at}
